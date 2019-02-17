@@ -1,4 +1,13 @@
 const express = require('express')
+const bodyParser = require('body-parser')
+const logger = require("morgan")
+const mongoose = require("mongoose")
+
+// Scrapping Tools
+const axios = require("axios")
+const cherrio = require("cheerio");
+
+// Initalize Express
 const app = express()
 const port = 3000
 
