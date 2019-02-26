@@ -10,7 +10,7 @@ const jwt = require('express-jwt')
 
 // Scrapping Tools
 const axios = require("axios")
-const cherrio = require("cheerio")
+const cheerio = require("cheerio")
 
 // Initalize Express
 const app = express()
@@ -32,20 +32,20 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
 app.use(cookieParser());
-app.use(
-  jwt({
-    secret: "shhhhhhared-secret",
-    getToken: function fromHeaderOrCookie(req) {
-      //fromHeaderOrQuerystring
-      if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
-        return req.headers.authorization.split(" ")[1];
-      } else if (req.cookies && req.cookies.token) {
-        return req.cookies.token;
-      }
-      return null;
-    }
-  }).unless({ path: ["/", "/login", "/sign-up"] })
-);
+// app.use(
+//   jwt({
+//     secret: "shhhhhhared-secret",
+//     getToken: function fromHeaderOrCookie(req) {
+//       //fromHeaderOrQuerystring
+//       if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+//         return req.headers.authorization.split(" ")[1];
+//       } else if (req.cookies && req.cookies.token) {
+//         return req.cookies.token;
+//       }
+//       return null;
+//     }
+//   }).unless({ path: ["/", "/login", "/sign-up"] })
+// );
 
 // Connect to the MongoDB
 mongoose.connect("mongodb://localhost/disney-pin-news-db", { useNewUrlParser: true }, console.log("Connected successfully to database"))
@@ -57,12 +57,15 @@ app.get("/scrape", function(req, res) {
         // Then, load that into cheerio and save it to $ for shorthand selector
         const $ = cheerio.load(response.data)
 
+        // Now we grab 
+        let stuff = $("#loops-wrapper > article > div > div > div > p:nth-child(1)").text();
+        console.log(stuff)
         
     })
 })
 
 // Exporting Auth Controller
-require('./controllers/auth.js')(app)
+// require('./controllers/auth.js')(app)
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
