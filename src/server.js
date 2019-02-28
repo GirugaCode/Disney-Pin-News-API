@@ -49,37 +49,72 @@ mongoose.connect('mongodb://localhost/disney-pin-news-db', { useNewUrlParser: tr
 // A GET route for scraping the DisneyPinBlogs website
 app.get('/scrape', (req, res) => {
   // Grab the bots of html with axios
+  // for (let i = 0; i < 999; i++) {
+  //   axios.get(`http://disneypinsblog.com/blog/page/${i}`).then((response) => {
+  //     let $ = cheerio.load(response.data);
+  //     if ($('.error404')) {
+  //       break;
+  //     }
+
+  //     const allArticles = $('.post-title > a').toArray();
+  //     for (let i = 0; i < allArticles.length; i += 1) {
+  //       console.log(allArticles[i].attribs['href'])
+  //     }
+  //   });
+  // }
   axios.get('http://disneypinsblog.com/blog/').then((response) => {
     // Then, load that into cheerio and save it to $ for shorthand selector
-    const $ = cheerio.load(response.data);
+    let $ = cheerio.load(response.data);
 
     // Now we grab every article within the loops-wrapper
-    // let stuff = $("#loops-wrapper > article > div > div > div > p:nth-child(1)").text();
-    // console.log(stuff)
-    $('#loops-wrapper').each((i, element) => {
-      // Save an empty result object
-      const result = {};
+    const firstArticle = $('.loops-wrapper > article > div > div > h2 > a').attr();
+      // console.log(firstArticle);
+    axios.get(firstArticle.href).then((response) => {
+      $ = cheerio.load(response.data);
+      const articleTitle = $('.post-title').text();
+      // console.log(articleTitle);
 
-      result.title = $(this)
-        .children('a');
-        .text();
-      result.link = $(this)
-        .children("a")
-        .attr("href")
+      const articleDetail = $('.entry-content > p').text();
+      // console.log(articleDetail);
 
-      db.Article.create(result)
-        .then(function(dbArticle) {
-           // View the added result in the console
-          console.log(dbArticle);
-         })
-         .catch(function(err) {
-          // If an error occurred, send it to the client
-           return res.json(err);
-         });
-     })
-    res.send("Scrape Complete")        
-   })
-})
+      const pictureDetail = $('.entry-content > ul').text();
+      // console.log(pictureDetail);
+
+      const articleImages = $('.entry-content > .wp-block-image > .aligncenter > img').toArray();
+      for (let i = 0; i < articleImages.length; i += 1) {
+        // console.log(articleImages[i].attribs['src'], articleImages[i].attribs['alt']);
+      }
+      // console.log(articleImages[2])
+    });
+
+    const secondArticle = $('.post-title > a').toArray();
+    for (let i = 0; i < secondArticle.length; i += 1) {
+      console.log(secondArticle[i].attribs['href'])
+    }
+    // $('#loops-wrapper').each((i, element) => {
+    //   // Save an empty result object
+    //   const result = {};
+
+    //   result.title = $(this)
+    //     .children('a');
+    //     .text();
+    //   result.link = $(this)
+    //     .children("a")
+    //     .attr("href")
+
+    //   db.Article.create(result)
+    //     .then(function(dbArticle) {
+    //        // View the added result in the console
+    //       console.log(dbArticle);
+    //      })
+    //      .catch(function(err) {
+    //       // If an error occurred, send it to the client
+    //        return res.json(err);
+    //      });
+    //  })
+    res.send('Scrape Complete');     
+  });
+});
 
 // Exporting Auth Controller
 // require('./controllers/auth.js')(app)
