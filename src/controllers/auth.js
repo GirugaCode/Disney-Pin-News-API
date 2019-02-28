@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user')
+const User = require('../models/user');
 
 module.exports = (app) => {
   // SIGN UP FORM
@@ -15,7 +15,7 @@ module.exports = (app) => {
       .save((err) => {
         if (err) console.log(err);
         const token = jwt.sign({ _id: newUser._id }, 'shhhhhhared-secret');
-        res.json({"token': token})
-          })
+        res.json({'token': token});
       });
-}
+  });
+};
