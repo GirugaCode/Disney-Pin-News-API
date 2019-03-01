@@ -24,6 +24,19 @@ nightmare
 let getData = (html) => {
   data = [];
   const $ = cheerio.load(html);
-  const allArticles = $('.loops-wrapper').html();
-  console.log(allArticles);
+  const articleTitle = $('.post-title').text();
+  console.log(articleTitle);
+  const articleDate = $('.post-date-wrap').text().replace(/\t+/g,' ').replace(/\n+/g,'');
+  console.log(articleDate);
+  const articleImages = $('.post-image img').toArray();
+  for (let i = 0; i < articleImages.length; i += 1) {
+    console.log(articleImages[i].attribs['src']);
+  }
+  if (articleTitle) {
+    data.push({
+      articleTitle: articleTitle,
+      articleDate: articleDate
+    });
+  }
+  return data;
 };
