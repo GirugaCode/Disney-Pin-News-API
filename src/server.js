@@ -49,46 +49,91 @@ app.use(cookieParser());
 
 // Connect to the MongoDB
 mongoose.connect('mongodb://localhost/disney-pin-news-db', {
-  useNewUrlParser: true
+  useNewUrlParser: true,
 }, console.log('Connected successfully to database'));
 
 // A GET route for scraping the DisneyPinBlogs website
-app.get('/scrape', async (req, res) => {
-
-  for (let i = 0; i < 10; i += 1) {
+app.get('/scrape', (req, res) => {
+  for (let i = 0; i < 20; i += 1) {
     try {
-      const response = await axios.get(`http://disneypinsblog.com/blog/page/${i}`);
-      const $ = cheerio.load(response.data);
-      const fourohfour = $('.error404');
-      if (fourohfour) {
-        break;
-      }
-      const allArticles = $('.post-title > a').toArray();
-      for (let j = 0; j < allArticles.length; j += 1) {
-        console.log(allArticles[j].attribs['href'])
-      }
+      // First, we grab the body of the html with axios
+      axios.get(`https://disneypinsblog.com/blog/page/${i}/`).then((response) => {
+        // Then, we load that into cheerio and save it to $ for a shorthand selector
+        const $ = cheerio.load(response.data);
+        // Now, we grab every h2 within an article tag, and do the following:
+        $('article .post-content').each(function getPosts() {
+          // Save an empty result object
+          const result = {};
+
+          // Add the text and href of every link, and save them as properties of the result object
+          result.title = $(this)
+            .children('h2')
+            .text();
+          result.date = $(this)
+            .children('p')
+            .text()
+            .replace(/\t+/g, '')
+            .replace(/\n+/g, '');
+          result.picture = $(this)
+            .find('img')
+            .attr('src');
+          // Create a new Article using the `result` object built from scraping
+          db.Article.create(result)
+            .then((dbArticle) => {
+              // View the added result in the console
+              console.log(dbArticle);
+            })
+            .catch((err) => {
+              // If an error occurred, send it to the client
+              return res.json(err);
+            });
+        });
+
+        // If we were able to successfully scrape and save an Article, send a message to the client
+        res.send('Scrape Complete');
+      });
     } catch (error) {
       throw error;
     }
-
   }
-
-  // // Grab the bots of html with axios
-  // for (let i = 0; i < 999; i += 1) {
-
-  // axios.get(`http://disneypinsblog.com/blog/page/${i}`) => {
-  //   let $ = cheerio.load(response.data);
-  //   if ($('.error404')) {
-  //     break;
-  //   }
-
-  //   const allArticles = $('.post-title > a').toArray();
-  //   for (let i = 0; i < allArticles.length; i += 1) {
-  //     console.log(allArticles[i].attribs['href'])
-  //   }
-  // });
-  res.send('Scrape Complete');
 });
+
+// app.get('/scrape', async (req, res) => {
+
+//   for (let i = 0; i < 10; i += 1) {
+//     try {
+//       const response = await axios.get(`http://disneypinsblog.com/blog/page/${i}`);
+//       const $ = cheerio.load(response.data);
+//       const fourohfour = $('.error404');
+//       if (fourohfour) {
+//         break;
+//       }
+//       const allArticles = $('.post-title > a').toArray();
+//       for (let j = 0; j < allArticles.length; j += 1) {
+//         console.log(allArticles[j].attribs['href'])
+//       }
+//     } catch (error) {
+//       throw error;
+//     }
+
+//   }
+
+// // Grab the bots of html with axios
+// for (let i = 0; i < 999; i += 1) {
+
+// axios.get(`http://disneypinsblog.com/blog/page/${i}`) => {
+//   let $ = cheerio.load(response.data);
+//   if ($('.error404')) {
+//     break;
+//   }
+
+//   const allArticles = $('.post-title > a').toArray();
+//   for (let i = 0; i < allArticles.length; i += 1) {
+//     console.log(allArticles[i].attribs['href'])
+//   }
+// });
+//   res.send('Scrape Complete');
+// });
 
 
 

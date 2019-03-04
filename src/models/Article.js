@@ -1,24 +1,19 @@
 const mongoose = require('mongoose');
 
 // Save a reference to the Schema constructor
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
-// Schema Constructor
+// Creates a new ArticleSchema object
 const ArticleSchema = new Schema({
-  // 'title' is required and of type String
-  title: {
-    type: String,
-    required: true,
-  },
-  // 'link' is required and of type String
-  link: {
-    type: String,
-    required: true,
-  },
+  title: String,
+  date: String,
+  description: String,
+  picture: String,
+  pictureDescription: String,
 });
 
-// Creates a model from the Schema, using mongoose's model method
+// Creates our model from the schema, uses the mongoose method
 const Article = mongoose.model('Article', ArticleSchema);
 
-// Export the Article Model
+// Export the Article model
 module.exports = Article;
