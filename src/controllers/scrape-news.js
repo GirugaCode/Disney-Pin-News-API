@@ -1,15 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const mongoose = require('mongoose');
 const db = require('../models');
 
+// Connect to MongoDB
 require('../data/disney-pin-news-db');
-
-// // Connect to the MongoDB
-// mongoose.connect('mongodb://localhost/disney-pin-news-db', {
-//   useNewUrlParser: true,
-// },
-//   console.log('Connected successfully to database'));
 
 for (let pages = 1; pages < 11; pages += 1) {
   axios.get(`https://disneypinsblog.com/blog/page/${pages}`).then((response) => {
