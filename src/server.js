@@ -11,9 +11,6 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = 3000;
 
-// Require all models
-const db = require('./models');
-
 app.engine('handlebars', exphbs({
   defaultLayout: 'main',
 }));
@@ -45,15 +42,18 @@ app.use(cookieParser());
 //   }).unless({ path: ["/", "/login", "/sign-up"] })
 // );
 
+
+// Look into controllers and use them
+const articles = require('./controllers/articles');
+
+articles(app);
+
 // Connect to the MongoDB
-mongoose.connect('mongodb://localhost/disney-pin-news-db', {
-      useNewUrlParser: true,
-    }, //console.log('Connected successfully to database'));
-    // Exporting Auth Controller
-    // require('./controllers/auth.js')(app)
+mongoose.connect('mongodb://localhost/disney-pin-news-db', { useNewUrlParser: true });
 
-    app.get('/', (req, res) => res.send('Hello World!'));
 
-    app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`);
+});
 
-    module.exports = app;
+module.exports = app;
