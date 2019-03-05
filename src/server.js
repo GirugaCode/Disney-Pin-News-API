@@ -4,10 +4,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
-const jwt = require('express-jwt');
-// Scrapping Tools
-const axios = require('axios');
-const cheerio = require('cheerio');
+// const jwt = require('express-jwt');
+
 
 // Initalize Express
 const app = express();
@@ -17,7 +15,7 @@ const port = 3000;
 const db = require('./models');
 
 app.engine('handlebars', exphbs({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
 }));
 app.set('view engine', 'handlebars');
 // Configure middleware
@@ -26,7 +24,7 @@ app.set('view engine', 'handlebars');
 app.use(logger('dev'));
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
 }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static('public'));
@@ -49,153 +47,13 @@ app.use(cookieParser());
 
 // Connect to the MongoDB
 mongoose.connect('mongodb://localhost/disney-pin-news-db', {
-  useNewUrlParser: true,
-}, console.log('Connected successfully to database'));
+      useNewUrlParser: true,
+    }, //console.log('Connected successfully to database'));
+    // Exporting Auth Controller
+    // require('./controllers/auth.js')(app)
 
-// A GET route for scraping the DisneyPinBlogs website
-app.get('/scrape', (req, res) => {
-  for (let i = 0; i < 20; i += 1) {
-    try {
-      // First, we grab the body of the html with axios
-      axios.get(`https://disneypinsblog.com/blog/page/${i}/`).then((response) => {
-        // Then, we load that into cheerio and save it to $ for a shorthand selector
-        const $ = cheerio.load(response.data);
-        // Now, we grab every h2 within an article tag, and do the following:
-        $('article .post-content').each(function getPosts() {
-          // Save an empty result object
-          const result = {};
+    app.get('/', (req, res) => res.send('Hello World!'));
 
-          // Add the text and href of every link, and save them as properties of the result object
-          result.title = $(this)
-            .children('h2')
-            .text();
-          result.date = $(this)
-            .children('p')
-            .text()
-            .replace(/\t+/g, '')
-            .replace(/\n+/g, '');
-          result.picture = $(this)
-            .find('img')
-            .attr('src');
-          // Create a new Article using the `result` object built from scraping
-          db.Article.create(result)
-            .then((dbArticle) => {
-              // View the added result in the console
-              console.log(dbArticle);
-            })
-            .catch((err) => {
-              // If an error occurred, send it to the client
-              return res.json(err);
-            });
-        });
+    app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-        // If we were able to successfully scrape and save an Article, send a message to the client
-        res.send('Scrape Complete');
-      });
-    } catch (error) {
-      throw error;
-    }
-  }
-});
-
-// app.get('/scrape', async (req, res) => {
-
-//   for (let i = 0; i < 10; i += 1) {
-//     try {
-//       const response = await axios.get(`http://disneypinsblog.com/blog/page/${i}`);
-//       const $ = cheerio.load(response.data);
-//       const fourohfour = $('.error404');
-//       if (fourohfour) {
-//         break;
-//       }
-//       const allArticles = $('.post-title > a').toArray();
-//       for (let j = 0; j < allArticles.length; j += 1) {
-//         console.log(allArticles[j].attribs['href'])
-//       }
-//     } catch (error) {
-//       throw error;
-//     }
-
-//   }
-
-// // Grab the bots of html with axios
-// for (let i = 0; i < 999; i += 1) {
-
-// axios.get(`http://disneypinsblog.com/blog/page/${i}`) => {
-//   let $ = cheerio.load(response.data);
-//   if ($('.error404')) {
-//     break;
-//   }
-
-//   const allArticles = $('.post-title > a').toArray();
-//   for (let i = 0; i < allArticles.length; i += 1) {
-//     console.log(allArticles[i].attribs['href'])
-//   }
-// });
-//   res.send('Scrape Complete');
-// });
-
-
-
-// axios.get('http://disneypinsblog.com/blog/').then((response) => {
-//   // Then, load that into cheerio and save it to $ for shorthand selector
-//   let $ = cheerio.load(response.data);
-
-//   // Now we grab every article within the loops-wrapper
-//   const firstArticle = $('.loops-wrapper > article > div > div > h2 > a').attr();
-//     // console.log(firstArticle);
-//   axios.get(firstArticle.href).then((response) => {
-//     $ = cheerio.load(response.data);
-//     const articleTitle = $('.post-title').text();
-//     // console.log(articleTitle);
-
-//     const articleDetail = $('.entry-content > p').text();
-//     // console.log(articleDetail);
-
-//     const pictureDetail = $('.entry-content > ul').text();
-//     // console.log(pictureDetail);
-
-//     const articleImages = $('.entry-content > .wp-block-image > .aligncenter > img').toArray();
-//     for (let i = 0; i < articleImages.length; i += 1) {
-//       // console.log(articleImages[i].attribs['src'], articleImages[i].attribs['alt']);
-//     }
-//     // console.log(articleImages[2])
-//   });
-
-//   const secondArticle = $('.post-title > a').toArray();
-//   for (let i = 0; i < secondArticle.length; i += 1) {
-//     console.log(secondArticle[i].attribs['href'])
-//   }
-//   // $('#loops-wrapper').each((i, element) => {
-//   //   // Save an empty result object
-//   //   const result = {};
-
-//   //   result.title = $(this)
-//   //     .children('a');
-//   //     .text();
-//   //   result.link = $(this)
-//   //     .children("a")
-//   //     .attr("href")
-
-//   //   db.Article.create(result)
-//   //     .then(function(dbArticle) {
-//   //        // View the added result in the console
-//   //       console.log(dbArticle);
-//   //      })
-//   //      .catch(function(err) {
-//   //       // If an error occurred, send it to the client
-//   //        return res.json(err);
-//   //      });
-//   //  })
-//   res.send('Scrape Complete');     
-// });
-
-
-// Exporting Auth Controller
-// require('./controllers/auth.js')(app)
-
-app.get('/', (req, res) => res.send('Hello World!'));
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-module.exports = app;
+    module.exports = app;

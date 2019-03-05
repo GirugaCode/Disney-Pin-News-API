@@ -22,6 +22,7 @@
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.13",
+    "mongoose-unique-validator": "^2.0.2",
     "morgan": "^1.9.1",
     "nightmare": "^3.0.1",
     "npm": "^6.8.0",
