@@ -11,6 +11,7 @@ const ArticleSchema = new Schema({
   description: { type: String, required: true },
   picture: { type: String, required: true },
   pictureDescription: { type: String, required: false },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 // Plugin for Mongoose Unique Validator

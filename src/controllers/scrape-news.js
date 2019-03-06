@@ -9,7 +9,7 @@ for (let pages = 1; pages < 11; pages += 1) {
   axios.get(`https://disneypinsblog.com/blog/page/${pages}`).then((response) => {
     const $ = cheerio.load(response.data);
     const articleArray = $('.post-title > a').toArray();
-    console.log(articleArray);
+    // console.log(articleArray);
     articleArray.forEach((article) => {
       // console.log(article.attribs.href);
       const articleLink = article.attribs.href;
@@ -21,7 +21,7 @@ for (let pages = 1; pages < 11; pages += 1) {
         results.description = $$('.entry-content > p').text();
         results.picture = $$('.wp-block-image').find('img').attr('src');
         results.pictureDescription = $$('.aligncenter > figcaption').text();
-        // console.log(results);       
+        // console.log(results);
         const saveToDatabase = new db.Article(results);
         saveToDatabase.save();
       });

@@ -20,24 +20,24 @@ app.set('view engine', 'handlebars');
 app.use(logger('dev'));
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 // Use express.static to serve the public folder as a static directory
 app.use(express.static('public'));
 
 app.use(cookieParser());
 // app.use(
 //   jwt({
-//     secret: "shhhhhhared-secret",
+//     secret: 'shhhhhhared-secret',
 //     getToken: function fromHeaderOrCookie(req) {
-//       //fromHeaderOrQuerystring
-//       if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
-//         return req.headers.authorization.split(" ")[1];
-//       } else if (req.cookies && req.cookies.token) {
+//       // fromHeaderOrQuerystring
+//       if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+//         return req.headers.authorization.split(' ')[1];
+//       } if (req.cookies && req.cookies.token) {
 //         return req.cookies.token;
 //       }
 //       return null;
-//     }
-//   }).unless({ path: ["/", "/login", "/sign-up"] })
+//     },
+//   }).unless({ path: ['/', '/login', '/sign-up'] }),
 // );
 
 
