@@ -29,4 +29,14 @@ module.exports = (app) => {
         console.log(err.message);
       });
   });
+  app.delete('/api/news/:id', (req, res) => {
+    Article.findByIdAndDelete({ _id: req.params.id }, req.body)
+      .then((article) => {
+        console.log(article);
+        res.send('Deleted Article');
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  });
 };
