@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
-// const jwt = require('express-jwt');
+const jwt = require('express-jwt');
 
 
 // Initalize Express
@@ -40,13 +40,26 @@ app.use(cookieParser());
 //   }).unless({ path: ['/', '/login', '/sign-up'] }),
 // );
 
+const checkAuth = (req, res, next) => {
+  console.log('Checking authentication');
+  if (typeof req.body.nToken === 'undefined' || req.body.nToken === null) {
+    req.user = null;
+  } else {
+    const token = req.body.nToken;
+    const decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+  next();
+};
+app.use(checkAuth);
+
 
 // Look into controllers and use them
-const articles = require('./controllers/articles');
+require('./controllers/articles')(app);
 
 require('./data/disney-pin-news-db');
 
-articles(app);
+require('./controllers/auth')(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
