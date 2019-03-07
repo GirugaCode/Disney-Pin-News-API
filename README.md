@@ -29,11 +29,11 @@ Retrive the latest news in Disney Pins.
 
 | Key         | Type         | Description                                                           |
 |-------------|--------------|-----------------------------------------------------------------------|
-| Title       |    string    | The Articles's title
-| Date        |     Date     | The Player's in game level                                            |
-| Description |    string    | The Player's in game portrait                                         |
-| Picture     |  string(url) | The Player's scoring based on other players' rating                   |
-| Pic. Desc.  |    string    | The Player's account status (needs to be public to display game data) |
+| Title       |    string    | The Articles's title                                                  |
+| Date        |     Date     | The Articles's date                                                   |
+| Description |    string    | The Articles's description                                            |
+| Picture     |  string(url) | The Articles's picture in a url                                       |
+| Pic. Desc.  |    string    | The Articles's picture description                                    |
 
 ## Built With
 
