@@ -21,7 +21,7 @@ describe('site', () => {
         if (err) {
           return done(err);
         }
-        res.status.should.be.equal(201);
+        res.should.have.status(201);
         return done();
       });
   });
@@ -33,7 +33,7 @@ describe('site', () => {
         if (err) {
           return done(err);
         }
-        res.status.should.be.equal(200);
+        res.should.have.status(200);
         return done();
       });
   });

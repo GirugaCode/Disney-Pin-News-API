@@ -1,14 +1,17 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('./../server');
+const server = require('../server');
+
+const should = chai.should();
 
 chai.use(chaiHttp);
 
 // Agent that will keep track of our cookies
 const agent = chai.request.agent(server);
 
-const User = require('../models/user');
+const User = require('../src/models/user');
 
 describe('User', () => {
   // Should not log in not existing user

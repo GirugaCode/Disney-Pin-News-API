@@ -56,11 +56,11 @@ app.use(checkAuth);
 
 
 // Look into controllers and use them
-require('./controllers/articles')(app);
+require('./src/controllers/articles')(app);
 
-require('./data/disney-pin-news-db');
+require('./src/data/disney-pin-news-db');
 
-require('./controllers/auth')(app);
+require('./src/controllers/auth')(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);

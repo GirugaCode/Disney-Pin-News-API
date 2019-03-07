@@ -4,8 +4,7 @@
   "description": "An API for Disney Pin News",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node server.js"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
