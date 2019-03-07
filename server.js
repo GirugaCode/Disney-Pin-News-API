@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const exphbs = require('express-handlebars');
-const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const jwt = require('express-jwt');
 
@@ -54,10 +53,6 @@ const checkAuth = (req, res, next) => {
   next();
 };
 app.use(checkAuth);
-
-const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/disney-pin-news-db';
-mongoose.connect(mongoUrl, { useNewUrlParser: true });
-
 
 // Look into controllers and use them
 require('./src/controllers/articles')(app);

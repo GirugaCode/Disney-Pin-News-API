@@ -4,10 +4,10 @@
 const mongoose = require('mongoose');
 const assert = require('assert');
 
-const url = 'mongodb://localhost/disney-pin-news-db';
+const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost/disney-pin-news-db';
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  url, {
+  mongoUrl, {
     useNewUrlParser: true,
   },
   (err, db) => {
