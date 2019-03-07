@@ -9,7 +9,7 @@ const jwt = require('express-jwt');
 
 // Initalize Express
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.engine('handlebars', exphbs({
   defaultLayout: 'main',
@@ -62,8 +62,6 @@ require('./src/data/disney-pin-news-db');
 
 require('./src/controllers/auth')(app);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`);
-});
+app.listen(port);
 
 module.exports = app;
