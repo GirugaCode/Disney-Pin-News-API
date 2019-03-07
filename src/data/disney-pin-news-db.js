@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 /* Mongoose Connection */
 const mongoose = require('mongoose');
 const assert = require('assert');
