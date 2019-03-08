@@ -93,6 +93,7 @@ Update **ONE** of the articles
 
 ## Web Extension Suggestion
 **Chrome** - [JSON Formatter - Chrome](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?hl=en) - JSON Formatter for Chrome
+
 **Safari** - [JSON Formatter - Safari](https://safari-extensions.apple.com/details/?id=com.marcdonkers.asinijsonviewer) - JSON Formatter for Safari
 
 ## Client Libraries
