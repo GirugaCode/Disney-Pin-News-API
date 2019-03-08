@@ -6,7 +6,7 @@
 
 > Retrieve the latest news in Disney Pins
 
-[GitHub](https://disney-pin-news-api.herokuapp.com/api/news)
+[GitHub](https://disney-pin-news-api.herokuapp.com/api/news/:id)
 [Get Started](#DisneyPinNewsAPI)
 
 <!-- background color -->
