@@ -29,7 +29,7 @@ You may use [Postman](https://www.getpostman.com/) to *Sign In* and *Log In* to 
 
 *Same as User Schema*
 
-### Requests to get articles
+## Requests to get articles
 
 Retrive **ONE** of the latest news in Disney Pins.
 
