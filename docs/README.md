@@ -11,7 +11,7 @@ The **Disney Pin News API** is an open source API. No current limit has been enf
 
 These instructions will get help you make a call to the API to retrieve the information. See instructions for notes on how to request the project on a your own personal project.
 
-### Authentication
+## Authentication
 You may use [Postman](https://www.getpostman.com/) to *Sign In* and *Log In* to the API
 
 *Routes*
@@ -29,7 +29,7 @@ You may use [Postman](https://www.getpostman.com/) to *Sign In* and *Log In* to 
 
 *Same as User Schema*
 
-**Sample Requests**
+##Sample Requests
 
 Retrive **ONE** of the latest news in Disney Pins.
 
@@ -90,6 +90,26 @@ Update **ONE** of the articles
 | Description |    string    | The Articles's description                                            |
 | Picture     |  string(url) | The Articles's picture in a url                                       |
 | Pic. Desc.  |    string    | The Articles's picture description                                    |
+
+## Comments
+Post a Comment on a News article
+
+**POST url** __https://disney-pin-news-api.herokuapp.com/api/news/:id/comments__
+
+| Key         | Type         | Description                                                           |
+|-------------|--------------|-----------------------------------------------------------------------|
+| Comment     |    string    | The Articles's Comments                                               |
+
+Get a Comment on a News article
+
+**GET url** __https://disney-pin-news-api.herokuapp.com/api/news/:id/comments/:commentId__
+```JSON
+        {
+            "_id": "5c7f66fe72ee977a089b9560",
+            "comment": "This is a great article! Would read"
+        }
+```
+
 
 ## Web Extension Suggestion
 **Chrome** - [JSON Formatter - Chrome](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?hl=en) - JSON Formatter for Chrome
