@@ -1,6 +1,7 @@
-# Disney Pin News API
+![Banner](/docs/DisneyPic.jpg)
+# Disney Pin News API ([Documentation](https://girugacode.github.io/Disney-Pin-New-API/))
 
-The **Disney Pin News API** will gather you the latest news that is currently going on in the community. This API will respond to you in JSON and provide the headline, publish date, description, image, and more. 
+The **Disney Pin News API** will gather you the latest news that is currently going on in the community. This API will respond to you in JSON and provide the headline, publish date, description, image, and more. The best part is that the information will always stay *up to date* 
 
 ## Rate Limit
 
