@@ -26,20 +26,6 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.use(cookieParser());
-// app.use(
-//   jwt({
-//     secret: 'shhhhhhared-secret',
-//     getToken: function fromHeaderOrCookie(req) {
-//       // fromHeaderOrQuerystring
-//       if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-//         return req.headers.authorization.split(' ')[1];
-//       } if (req.cookies && req.cookies.token) {
-//         return req.cookies.token;
-//       }
-//       return null;
-//     },
-//   }).unless({ path: ['/', '/login', '/sign-up'] }),
-// );
 
 const checkAuth = (req, res, next) => {
   console.log('Checking authentication');
@@ -52,9 +38,9 @@ const checkAuth = (req, res, next) => {
   }
   next();
 };
+
 app.use(checkAuth);
 
-// Look into controllers and use them
 require('./src/controllers/articles')(app);
 
 require('./src/data/disney-pin-news-db');
@@ -62,5 +48,6 @@ require('./src/data/disney-pin-news-db');
 require('./src/controllers/auth')(app);
 
 app.listen(port);
+console.log(`Sucessfully connected to port ${port}`);
 
 module.exports = app;
