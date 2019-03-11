@@ -4,10 +4,11 @@ const Article = require('../models/Article');
 const Comment = require('../models/Comment');
 
 module.exports = (app) => {
-  // CREATE Article
+  // HOME ROUTE
   app.get('/', (req, res) => {
     res.send('Disney Pin News API Home Goto /api/news');
   });
+  // CREATE AN ARTICLE
   app.post('/api/news', (req, res) => {
     const article = new Article(req.body);
     article.save(article);
@@ -17,22 +18,28 @@ module.exports = (app) => {
       article,
     });
   });
-  // READ Articles
+  // READ ALL ARTICLES
   app.get('/api/news', (req, res) => {
     Article.find()
       .sort('-date')
       .then((articles) => {
         res.json({ articles });
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   });
-  // READ Article
+  // READ ONE ARTICLE
   app.get('/api/news/:id', (req, res) => {
     Article.findOne({ _id: req.params.id }).populate('comments')
       .then((article) => {
         res.json({ article });
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   });
-  // UPDATE Article
+  // UPDATE ARTICLE
   app.put('/api/news/:id', (req, res) => {
     Article.findByIdAndUpdate({ _id: req.params.id }, req.body)
       .then((article) => {
@@ -43,6 +50,18 @@ module.exports = (app) => {
         console.log(err.message);
       });
   });
+  // DELETE ARTICLE
+  app.delete('/api/news/:id', (req, res) => {
+    Article.findByIdAndDelete({ _id: req.params.id }, req.body)
+      .then((article) => {
+        console.log(article);
+        res.send('Deleted Article');
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  });
+  // CREATE COMMENT
   app.post('/api/news/:id/comments', (req, res) => {
     const comment = new Comment(req.body);
     Article.findByIdAndUpdate({ _id: req.params.id }, req.body)
@@ -56,21 +75,11 @@ module.exports = (app) => {
         console.log(err.message);
       });
   });
+  // READ A COMMENT
   app.get('/api/news/:id/comments/:commentId', (req, res) => {
     Comment
       .findOne({ _id: req.params.commentId })
       .then(comment => res.json({ comment }))
       .catch(err => res.json(err));
-  });
-  // DELETE Article
-  app.delete('/api/news/:id', (req, res) => {
-    Article.findByIdAndDelete({ _id: req.params.id }, req.body)
-      .then((article) => {
-        console.log(article);
-        res.send('Deleted Article');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
   });
 };
