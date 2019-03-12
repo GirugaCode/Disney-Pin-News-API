@@ -20,10 +20,11 @@ module.exports = (app) => {
   });
   // READ ALL ARTICLES
   app.get('/api/news', (req, res) => {
+    const currentUser = req.user;
     Article.find()
       .sort('-date')
       .then((articles) => {
-        res.json({ articles });
+        res.json({ articles, currentUser });
       })
       .catch((err) => {
         console.log(err.message);
