@@ -32,9 +32,10 @@ module.exports = (app) => {
   });
   // READ ONE ARTICLE
   app.get('/api/news/:id', (req, res) => {
+    const currentUser = req.user;
     Article.findOne({ _id: req.params.id }).populate('comments')
       .then((article) => {
-        res.json({ article });
+        res.json({ article, currentUser });
       })
       .catch((err) => {
         console.log(err.message);
