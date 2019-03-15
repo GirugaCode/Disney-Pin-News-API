@@ -79,10 +79,9 @@ module.exports = (app) => {
   });
   // READ A COMMENT
   app.get('/api/news/:id/comments/:commentId', (req, res) => {
-    const currentUser = req.user;
     Comment
       .findOne({ _id: req.params.commentId })
-      .then(comment => res.json({ comment, currentUser }))
+      .then(comment => res.json({ comment }))
       .catch(err => res.json(err));
   });
 };
