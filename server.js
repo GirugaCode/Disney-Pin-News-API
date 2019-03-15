@@ -43,6 +43,8 @@ app.use(checkAuth);
 
 require('./src/controllers/articles')(app);
 
+require('./src/controllers/comments')(app);
+
 require('./src/data/disney-pin-news-db');
 
 require('./src/controllers/auth')(app);
