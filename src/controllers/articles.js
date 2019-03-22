@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 const Article = require('../models/Article');
@@ -9,13 +10,17 @@ module.exports = (app) => {
   });
   // CREATE AN ARTICLE
   app.post('/api/news', (req, res) => {
-    const article = new Article(req.body);
-    article.save(article);
-    return res.status(201).send({
-      sucess: 'true',
-      message: 'article added successfully',
-      article,
-    });
+    if (req.user && req.user._id === '5c955d280fe2e556fc341a95') {
+      const article = new Article(req.body);
+      article.save(article);
+      res.status(201).send({
+        sucess: 'true',
+        message: 'article added successfully',
+        article,
+      });
+    } else {
+      res.status(401).send({ message: 'Unauthorized User' });
+    }
   });
   // READ ALL ARTICLES
   app.get('/api/news', (req, res) => {
@@ -40,24 +45,32 @@ module.exports = (app) => {
   });
   // UPDATE ARTICLE
   app.put('/api/news/:id', (req, res) => {
-    Article.findByIdAndUpdate({ _id: req.params.id }, req.body)
-      .then((article) => {
-        console.log(article);
-        res.send('Success');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    if (req.user && req.user._id === '5c955d280fe2e556fc341a95') {
+      Article.findByIdAndUpdate({ _id: req.params.id }, req.body)
+        .then((article) => {
+          console.log(article);
+          res.send('Success');
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      res.status(401).send({ message: 'Unauthorized User' });
+    }
   });
   // DELETE ARTICLE
   app.delete('/api/news/:id', (req, res) => {
-    Article.findByIdAndDelete({ _id: req.params.id }, req.body)
-      .then((article) => {
-        console.log(article);
-        res.send('Deleted Article');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    if (req.user && req.user._id === '5c955d280fe2e556fc341a95') {
+      Article.findByIdAndDelete({ _id: req.params.id }, req.body)
+        .then((article) => {
+          console.log(article);
+          res.send('Deleted Article');
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      res.status(401).send({ message: 'Unauthorized User' });
+    }
   });
 };

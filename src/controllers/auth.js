@@ -49,18 +49,22 @@ module.exports = (app) => {
   app.post('/login', (req, res) => {
     const { username } = req.body;
     const { password } = req.body;
+    // console.log("BODY", req.body);
     // Find this user name
     User.findOne({ username }, 'username password')
       .then((user) => {
         if (!user) {
           // User not found
-          return res.status(401).send({ message: 'Wrong Username or Password' });
+          return res.status(401).send({ message: 'Wrong Username' });
         }
+        // console.log(user);
+
         // Check the password
         user.comparePassword(password, (err, isMatch) => {
+          console.log(password);
           if (!isMatch) {
             // Password does not match
-            return res.status(401).send({ message: 'Wrong Username or password' });
+            return res.status(401).send({ message: 'Wrong password' });
           }
           // Create a token
           const token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, {
@@ -68,7 +72,11 @@ module.exports = (app) => {
           });
           // Set a cookie and redirect to root
           res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-          res.redirect('/');
+          res.status(200).header('x-auth', token).json({
+            result: 'Success',
+            userId: user._id,
+            nToken: token,
+          });
         });
       })
       .catch((err) => {

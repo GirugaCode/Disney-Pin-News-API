@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
-const jwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
 
 
 // Initalize Express

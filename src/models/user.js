@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 /* eslint-disable no-shadow */
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
   createdAt: { type: Date },
   updatedAt: { type: Date },
-  password: { type: String },
+  password: { type: String, select: false },
   username: { type: String, required: true },
 });
 
@@ -35,7 +36,7 @@ UserSchema.pre('save', function (next) {
 });
 
 // Need to use function to enable this.password to work.
-UserSchema.methods.comparePassword = (password, done) => {
+UserSchema.methods.comparePassword = function(password, done) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     done(err, isMatch);
   });
