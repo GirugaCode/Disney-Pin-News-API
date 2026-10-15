@@ -10,9 +10,7 @@ const User = require('../models/user');
 module.exports = (app) => {
   // Register route for mobile, will return success or error messages and create users
   app.post('/sign-up', (req, res) => {
-    console.log('Username: ');
-    console.log(req.body.username);
-    console.log(req.body.password);
+    // Avoid logging credentials
     let { username } = req.body;
     const { password } = req.body;
 
@@ -61,7 +59,6 @@ module.exports = (app) => {
 
         // Check the password
         user.comparePassword(password, (err, isMatch) => {
-          console.log(password);
           if (!isMatch) {
             // Password does not match
             return res.status(401).send({ message: 'Wrong password' });
